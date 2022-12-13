@@ -1,0 +1,29 @@
+{
+  "name": "r2soft/utils",
+  "description":"R2 Soft - Utilitarios para desenvolvimento",
+  "license": "MIT",
+  "keywords": [
+    "debug",
+    "R2 Soft"
+  ],
+  "authors":[
+    {
+      "name":"Ricardo de Paula Coelho",
+      "email": "ricardo@r2soft.com.br"
+    },
+    {
+      "name":"R2 Soft - Informática e Softwares Ltda-ME",
+      "email": "r2soft@r2soft.com.br"
+    }
+  ],
+  "homepage": "https://www.r2soft.com.br/",
+  "autoload": {
+    "files": [ "src/Utils.php" ],
+    "psr-4": {
+      "R2Soft\\Utils\\": "src/"
+    }
+  },
+  "require": {
+    "symfony/var-dumper": "^v6.0.8"
+  }
+}

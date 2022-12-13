@@ -1,0 +1,11 @@
+{
+    "name": "r2soft/mvc",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src//"
+        }
+    },
+    "require": {
+        "r2soft/utils": "^1.0"
+    }
+}

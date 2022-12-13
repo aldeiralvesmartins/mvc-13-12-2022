@@ -1,0 +1,30 @@
+CREATE TABLE clientes (
+id int PRIMARY KEY AUTO_INCREMENT,
+    nome varchar(250) not null,
+    cpf varchar(250) not null,
+    senha varchar(250) not null
+);
+
+CREATE TABLE pedidos (
+id int PRIMARY KEY AUTO_INCREMENT,
+  cliente_id integer REFERENCES clientes(id),
+    data DATe not null,
+   status enum('Aberto','Pago','Cancelado')
+    
+);
+
+CREATE TABLE produtos (
+id int PRIMARY KEY AUTO_INCREMENT,
+    nome varchar(250) not null,
+    valor double not null
+);
+CREATE TABLE itens_pedidos (
+id int PRIMARY KEY AUTO_INCREMENT,
+    produto_id integer REFERENCES produtos(id),
+    quantidade integer not null,
+    valor_unitario double,
+    valor_total double,
+    pedido_id integer REFERENCES pedidos(id)
+
+);
+
