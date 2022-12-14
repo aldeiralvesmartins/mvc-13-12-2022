@@ -4,11 +4,9 @@ namespace App\Models;
 
 use App\Conexao\Conexao;
 use PDO;
+
 class ClientesModel extends Conexao
 {
-
-    protected $mysqli;
-
 
     public function __construct()
     {
@@ -17,19 +15,17 @@ class ClientesModel extends Conexao
 
     public function cadastrar($dados)
     {
-        $cmd = $this->conn->prepare("SELECT id  FROM clientes WHERE nome = :n");
-        $cmd->bindValue(":n", $dados['nome']);                      
+        $cmd = $this->conn->prepare("SELECT id  FROM clientes WHERE cpf = :c");
+        $cmd->bindValue(":c", $dados['cpf']);
         $cmd->execute();
-        if($cmd->rowcount() > 0)
-        {
+
+        if ($cmd->rowcount() > 0) {
             return false;
         } else {
             $cmd = $this->conn->prepare("INSERT INTO  clientes (nome, cpf) VALUES (:n, :c)");
-            $cmd->bindValue(":n",$dados['nome']);
-            $cmd->bindValue(":c",$dados['cpf']);            
+            $cmd->bindValue(":n", $dados['nome']);
+            $cmd->bindValue(":c", $dados['cpf']);
             $cmd->execute();
-    
-           
         }
     }
 
@@ -42,27 +38,21 @@ class ClientesModel extends Conexao
         $res = $cmd->fetchAll();
         return $res;
     }
-    
 
-    public function excluir($dados)
+
+    public function excluir($id)
     {
-        if (!empty($dados["id"])) {
-
-            $id = $dados['id'];
-            $cmd = $this->conn->prepare( "DELETE FROM clientes where id = :id");
-            $cmd->bindValue(":id",$dados['id']);   
-            $cmd->execute(); 
-            $cmd->fetch();
-        }
-          
+        $cmd = $this->conn->prepare("DELETE FROM clientes where id = :id");
+        $cmd->bindValue(":id", $id);
+        return $cmd->execute();
     }
 
     public function editar($dados)
-    {        
+    {
         $cmd = $this->conn->prepare("UPDATE clientes SET cpf = :c, nome = :n WHERE id = :id");
-        $cmd->bindValue(":c",$dados['cpf']);
-        $cmd->bindValue(":n",$dados['nome']);        
-        $cmd->bindValue(":id",$dados['id']);
+        $cmd->bindValue(":c", $dados['cpf']);
+        $cmd->bindValue(":n", $dados['nome']);
+        $cmd->bindValue(":id", $dados['id']);
         $cmd->execute();
         return $cmd->fetchAll();
     }
@@ -71,9 +61,8 @@ class ClientesModel extends Conexao
     {
         $res = array();
         $cmd = $this->conn->prepare("SELECT * FROM clientes where id = :id");
-        $cmd->bindValue(":id",$id);
+        $cmd->bindValue(":id", $id);
         $cmd->execute();
         return $cmd->fetch(PDO::FETCH_ASSOC);
-        
     }
 }

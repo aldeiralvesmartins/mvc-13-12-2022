@@ -32,19 +32,21 @@ class ClientesView
     }
     public function cadastrar()
     {
-      
 
-        
         echo ' 
-                <div>
+                <div class="form-group" >
                     <h3>Cadastro</h3>
                     <form action="/?controller=clientes&acao=cadastrar" method ="post">
-                        Usuário:
-                        <input type="text" name="nome"></br></br>
-                        CPF:
-                        <input type="text" name="cpf"></br></br>
-                        <input class="botao" type="reset"  value="Limpar">
-                        <input class="botao" type="submit" name="submit" value="Cadastrar">
+                    <div class="form-group" >
+                
+                        <input type="text"placeholder="Nome" name="nome"></br></br>
+                        </div>
+                        <div class="form-group" >
+                    
+                        <input type="text" placeholder="CPF"name="cpf"></br></br>
+                        </div>
+                        <input class="btn btn-secondary" type="reset"  value="Limpar">
+                        <input class="btn btn-success" type="submit" name="submit" value="Cadastrar">
                     </form>
                 </div>';
   
@@ -56,15 +58,16 @@ class ClientesView
                 <div>
                     <h3>Editar Cadastro</h3>
                     <form action='/?controller=clientes&acao=editar' method ='post'>
-                        Usuário:
-                        <input type='text' name='nome' value='{$clientes['nome']}'></br></br>
-                        CPF:
-                        <input type='text' name='cpf' value='{$clientes['cpf']}' ></br></br>                        
+           
+                        <input type='text'placeholder='Usuário' name='nome' value='{$clientes['nome']}'></br></br>
+                   
+                        <input type='text'placeholder='CPF' name='cpf' value='{$clientes['cpf']}' ></br></br>                        
                         <input type='hidden' name='id' value={$clientes['id']} ></br></br>  
-                        <input class='botao' type='reset'  value='Limpar'>
-                        <input class='botao' type='submit' name='submit' value='Cadastrar'>
+                        <input class='btn btn-secondary' type='reset'  value='Limpar'>
+                        <input class='btn btn-success' type='submit' name='submit' value='Cadastrar'>
                     </form>
                 </div>";
     } 
+
 }
 

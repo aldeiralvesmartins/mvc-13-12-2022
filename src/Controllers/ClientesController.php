@@ -11,6 +11,8 @@ class ClientesController
 
     private $model;
 
+    public $msg;
+
     public function __construct(ClientesModel $model)
     {
         $this->model = $model;
@@ -19,8 +21,11 @@ class ClientesController
 
     public function index()
     {
+
+
         $clientes = $this->model->getAll();
         $view = new ClientesView();
+
         $view->index($clientes);
     }
 
@@ -31,17 +36,16 @@ class ClientesController
     }
 
     public function cadastrar()
-
     {
-        $view = new ClientesView();
+           $view = new ClientesView();
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $clientes = $this->model->cadastrar($_POST);
             $clientes = $this->model->getAll();
             $view->index($clientes);
-        }else{
+        } else {
+
             $view->cadastrar();
         }
-        
     }
 
     public function editar($id = null)
@@ -57,16 +61,11 @@ class ClientesController
         }
     }
 
-    public function excluir()
+    public function excluir($id = null)
     {
-        $view = new ClientesView($id = null);
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $clientes = $this->model->excluir($_POST);
-            $clientes = $this->model->getAll();
-            $view->index($clientes);
-        }else{
-            $clientes = $this->model->getById($id);
-            $view->index(@$clientes);
-        }
+        $view = new ClientesView();
+        $this->model->excluir($id);
+        $this->msg = 'Cliente Excluido';
+        $view->index($this->model->getAll());
     }
 }

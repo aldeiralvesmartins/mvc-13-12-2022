@@ -10,7 +10,7 @@
             <a class="nav-link <?php if ($CURRENT_PAGE == "About") {?>active<?php }?>" href="/?controller=produtos&acao=index">Produtos</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link <?php if ($CURRENT_PAGE == "Contact") {?>active<?php }?>" href="/?controller=pedidos&acao=index">Pedidos</a>
+            <a class="nav-link <?php if ($CURRENT_PAGE == "About") {?>active<?php }?>" href="/?controller=pedidos&acao=index">Pedidos</a>
         </li>
     </ul>
 </div>

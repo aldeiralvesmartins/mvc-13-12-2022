@@ -2,10 +2,10 @@
 
 namespace App\Controllers;
 
-use App\Models\ProdutosModel;
-use App\Views\ProdutosView;
+use App\Models\PedidosModel;
+use App\Views\PedidosView;
 
-class ProdutosController
+class PedidosController
 {
 
 
@@ -13,7 +13,7 @@ class ProdutosController
 
     public $msg;
 
-    public function __construct(ProdutosModel $model)
+    public function __construct(PedidosModel $model)
     {
         $this->model = $model;
     }
@@ -21,43 +21,46 @@ class ProdutosController
 
     public function index()
     {
-        $clientes = $this->model->getAll();
-        $view = new ProdutosView();
-        $view->index($clientes);
-    }
 
+
+        $pedidos = $this->model->getAll();
+        $view = new PedidosView();
+
+        $view->index($pedidos);
+    }
 
     public function cadastrar()
     {
-           $view = new ProdutosView();
+    
+        $view = new PedidosView();
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $clientes = $this->model->cadastrar($_POST);
             $clientes = $this->model->getAll();
             $view->index($clientes);
         } else {
 
-            $view->cadastrar();
+            $view->cadastrar($_POST);
         }
     }
 
     public function editar($id = null)
     {
-        $view = new ProdutosView();
+        $view = new PedidosView();
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $clientes = $this->model->editar($_POST);
-            $clientes = $this->model->getAll();
-            $view->index($clientes);
+            $pedidos = $this->model->editar($_POST);
+            $pedidos = $this->model->getAll();
+            $view->index($pedidos);
         } else {
-            $clientes = $this->model->getById($id);
-            $view->editar(@$clientes);
+            $pedidos = $this->model->getById($id);
+            $view->editar(@$pedidos);
         }
     }
 
     public function excluir($id = null)
     {
-        $view = new ProdutosView();
+        $view = new PedidosView();
         $this->model->excluir($id);
-        $this->msg = 'Cliente Excluido';
+        $this->msg = 'Pedido Excluido';
         $view->index($this->model->getAll());
     }
 }

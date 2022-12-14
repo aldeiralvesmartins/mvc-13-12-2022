@@ -6,19 +6,20 @@ error_reporting(E_ALL);
 require_once "vendor/autoload.php";
 
 $controller = $_GET['controller'];
-$acao = !empty($_GET['acao']) ? $_GET['acao'] : 'getAll';
+$acao = !empty($_GET['acao']) ? $_GET['acao'] : null;
 $id = !empty($_GET['id']) ? $_GET['id'] : null;
 
 switch ($controller){
     case 'clientes';
         $controller = new \App\Controllers\ClientesController(new \App\Models\ClientesModel());
-        break;
-    case 'pedidos':
-       $controller = new \App\Controllers\ProdutosController(new \App\Models\ProdutosModel());
-        break;
+        break; 
     case 'produtos':
        $controller = new \App\Controllers\ProdutosController(new \App\Models\ProdutosModel());
         break;
+    case 'pedidos':
+       $controller = new \App\Controllers\PedidosController(new \App\Models\PedidosModel());
+        break;
+
     case 'home':
         $controller = new \App\Controllers\HomeController(new \App\Models\ProdutosModel());
         break;
@@ -37,7 +38,12 @@ switch ($controller){
 <?php include("./src/includes/navigation.php");?>
 
 <div class="container" id="main-content">
-    <?php $controller->$acao($id); ?>
+    <?php 
+    $controller->$acao($id); 
+    if(!empty($controller->msg))
+        echo "<div class='alert alert-primary' role='alert'>{$controller->msg}</div>";
+    ?>
+  
 </div>
 
 <?php include("./src/includes/footer.php");?>

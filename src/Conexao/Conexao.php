@@ -7,7 +7,7 @@ use PDOException;
 define('BD_HOST', 'localhost:3306');
 define('BD_USUARIO', 'root');
 define('BD_SENHA', 'r2147258369');
-define('BD_BANCO', 'mvc');
+define('BD_BANCO', 'app_db2');
 
 class Conexao
 {
