@@ -3,14 +3,18 @@
 namespace App\Models;
 
 use App\Conexao\Conexao;
+use Exception;
 use PDO;
 
 class ProdutosModel extends Conexao
 {
+    public $dados=[];
 
     public function __construct()
     {
         parent::__construct();
+        $this->dados['nome']=null;
+        $this->dados['valor']=null;
     }
 
     public function cadastrar($dados)
@@ -26,7 +30,8 @@ class ProdutosModel extends Conexao
             $cmd->bindValue(":n", $dados['nome']);
             $cmd->bindValue(":v", $dados['valor']);
             $cmd->execute();
-        }
+        } $this->dados['nome']=null;
+        $this->dados['valor']=null;
     }
 
     public function getAll()
@@ -41,9 +46,13 @@ class ProdutosModel extends Conexao
 
     public function excluir($id)
     {
-        $cmd = $this->conn->prepare("DELETE FROM produtos where id = :id");
-        $cmd->bindValue(":id", $id);
-        return $cmd->execute();
+        try{
+            $cmd = $this->conn->prepare("DELETE FROM produtos where id = '$id'");
+            $cmd->execute();
+        }catch(\Exception $e){
+            throw new Exception('Produto já foi vinculado a um pedido', $e->getCode());
+        }
+        
     }
 
     public function editar($dados)
@@ -63,5 +72,12 @@ class ProdutosModel extends Conexao
         $cmd->bindValue(":id", $id);
         $cmd->execute();
         return $cmd->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getList(){
+        $res = array();
+        $cmd = $this->conn->prepare("SELECT id, nome FROM produtos order by nome asc");
+        $cmd->execute();        
+        return $cmd->fetchAll(PDO::FETCH_KEY_PAIR);
     }
 }

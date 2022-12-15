@@ -2,65 +2,88 @@
 
 namespace App\Controllers;
 
+use App\Models\ClientesModel;
 use App\Models\PedidosModel;
+use App\Models\ProdutosModel;
+use App\Models\ItensPedidosModel;
 use App\Views\PedidosView;
+
 
 class PedidosController
 {
-
-
-    private $model;
-
+    private $pedido;
+    private $clientesModel;
+    private $produtosModel;
+    private $itensPedido;
     public $msg;
-
-    public function __construct(PedidosModel $model)
-    {
-        $this->model = $model;
+    public $msgDanger;
+    public $status=['Aberto'=>'Aberto', 'Pago'=>'Pago', 'Cancelado'=>'Cancelado'];
+    public function __construct(
+        PedidosModel $model,
+        ClientesModel $clientes,
+        ProdutosModel $produtos,
+        ItensPedidosModel $itensPedido
+    ) {
+        $this->pedido = $model;
+        $this->clientesModel = $clientes;
+        $this->produtosModel = $produtos;
+        $this->itensPedido = $itensPedido;
     }
-
 
     public function index()
     {
-
-
-        $pedidos = $this->model->getAll();
+        $pedidos = $this->pedido->getAll();
         $view = new PedidosView();
-
         $view->index($pedidos);
     }
 
     public function cadastrar()
     {
-    
         $view = new PedidosView();
+        $clientes = $this->clientesModel->getList();
+        $produtos = $this->produtosModel->getList();
+       
+    
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $clientes = $this->model->cadastrar($_POST);
-            $clientes = $this->model->getAll();
-            $view->index($clientes);
-        } else {
+            $itens = $_POST['itens_pedido'];
+            $itens['pedido_id'] = $this->pedido->cadastrar($_POST['pedido']);
 
-            $view->cadastrar($_POST);
+            $this->itensPedido->cadastrar($itens);
+            $pedidos = $this->pedido->getAll();
+            $view->index($pedidos);
+        } else {
+            $view->cadastrar($clientes, $produtos);
         }
     }
 
     public function editar($id = null)
     {
-        $view = new PedidosView();
+        $view = new PedidosView();   
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $pedidos = $this->model->editar($_POST);
-            $pedidos = $this->model->getAll();
+            $pedidos = $this->pedido->editar($_POST);
+            $pedidos = $this->pedido->getAll();
             $view->index($pedidos);
         } else {
-            $pedidos = $this->model->getById($id);
-            $view->editar(@$pedidos);
+
+            $pedido['clientes'] = $this->clientesModel->getList();
+            $pedido['produtos'] = $this->produtosModel->getList();
+            $pedido['pedido'] = $this->pedido->getById($id);
+            $pedido['itens'] = $this->itensPedido->getByPedidoId($id);
+            $pedido['status'] = $this->status;
+            // debug($pedido);
+            $view->editar($pedido);
         }
     }
 
     public function excluir($id = null)
     {
         $view = new PedidosView();
-        $this->model->excluir($id);
+        try {
+        $this->pedido->excluir($id);
         $this->msg = 'Pedido Excluido';
-        $view->index($this->model->getAll());
+    } catch (\Exception $e) {
+        $this->msgDanger = $e->getMessage();
+    }
+        $view->index($this->pedido->getAll());
     }
 }

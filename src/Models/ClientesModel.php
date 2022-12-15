@@ -3,14 +3,19 @@
 namespace App\Models;
 
 use App\Conexao\Conexao;
+use Exception;
 use PDO;
 
 class ClientesModel extends Conexao
-{
+{   
+    public $dados=[];
 
     public function __construct()
     {
         parent::__construct();
+        $this->dados['nome'] = null;
+        $this->dados['cpf'] = null;
+    
     }
 
     public function cadastrar($dados)
@@ -42,9 +47,14 @@ class ClientesModel extends Conexao
 
     public function excluir($id)
     {
-        $cmd = $this->conn->prepare("DELETE FROM clientes where id = :id");
-        $cmd->bindValue(":id", $id);
-        return $cmd->execute();
+        try{
+            $cmd = $this->conn->prepare("DELETE FROM clientes where id = '$id'");
+            return $cmd->execute();
+        }catch(\Exception $e){
+            
+            throw new Exception('Cliente já foi vinculado a um pedido',$e->getCode());
+        }
+        
     }
 
     public function editar($dados)
@@ -64,5 +74,12 @@ class ClientesModel extends Conexao
         $cmd->bindValue(":id", $id);
         $cmd->execute();
         return $cmd->fetch(PDO::FETCH_ASSOC);
+    }
+    
+    public function getList(){
+        $res = array();
+        $cmd = $this->conn->prepare("SELECT id, nome FROM clientes order by nome asc");
+        $cmd->execute();        
+        return $cmd->fetchAll(PDO::FETCH_KEY_PAIR);
     }
 }

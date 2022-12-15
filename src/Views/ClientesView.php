@@ -6,9 +6,30 @@ class ClientesView
 {
 
 
-    public function login()
+    private function getForm($clientes, $titulo)
     {
+        $form = " 
+        <div class='form-group' >
+                     <h3>{$titulo}</h3>
+                     <form action='/?controller=clientes&acao=cadastrar' method ='post'>                     
+                        <div class='form-row'>
+                            <div class='col'>
+                                <input type='text' name='nome' class='form-control' placeholder='Nome do usuario' value='{$clientes['nome']}'>
+                            </div>
+                            <div class='col'>
+                                <input type='text' name='cpf' class='form-control' placeholder='cpf' value='{$clientes['cpf']}'>
+                            </div>";
+                            if(!empty($clientes['id']))
+                                $form .= "<input type='hidden' name='id' value={$clientes['id']} >"; 
+            $form .= "</div><br>
+                        <div>
+                            <input class='btn btn-secondary' type='reset'  value='Limpar'>
+                            <input class='btn btn-success' type='submit' name='submit' value='Cadastrar'>
+                        </div>
+                    </form>
+                </div> ";
 
+        echo $form;
     }
 
     public function index($dados)
@@ -17,12 +38,14 @@ class ClientesView
         echo '<table class="table">';
 
         echo " <tr>
+            <th>ID</th>
             <th>Nome</th>
             <th>CPF</th>
         </tr>";
     foreach ($dados as $dado) {
         
             echo "<tr>
+                    <td>{$dado['id']}</td>
                     <td>{$dado['nome']}</td>
                     <td>{$dado['cpf']}</td>
                    <td><a class='btn btn-warning' href='/?controller=clientes&acao=editar&id={$dado['id']}'>Editar</a><a class='btn btn-danger' href='/?controller=clientes&acao=excluir&id={$dado['id']}'>Excluir</a></td>";
@@ -30,44 +53,14 @@ class ClientesView
         }
         echo '</table>';
     }
-    public function cadastrar()
+    public function cadastrar($dados)
     {
+        $this->getForm($dados, 'Cadastrando');
 
-        echo ' 
-                <div class="form-group" >
-                    <h3>Cadastro</h3>
-                    <form action="/?controller=clientes&acao=cadastrar" method ="post">
-                    <div class="form-group" >
-                
-                        <input type="text"placeholder="Nome" name="nome"></br></br>
-                        </div>
-                        <div class="form-group" >
-                    
-                        <input type="text" placeholder="CPF"name="cpf"></br></br>
-                        </div>
-                        <input class="btn btn-secondary" type="reset"  value="Limpar">
-                        <input class="btn btn-success" type="submit" name="submit" value="Cadastrar">
-                    </form>
-                </div>';
-  
     }
-    public function editar($clientes)
+    public function editar($produtos)
     {
-        
-        echo " 
-                <div>
-                    <h3>Editar Cadastro</h3>
-                    <form action='/?controller=clientes&acao=editar' method ='post'>
-           
-                        <input type='text'placeholder='Usuário' name='nome' value='{$clientes['nome']}'></br></br>
-                   
-                        <input type='text'placeholder='CPF' name='cpf' value='{$clientes['cpf']}' ></br></br>                        
-                        <input type='hidden' name='id' value={$clientes['id']} ></br></br>  
-                        <input class='btn btn-secondary' type='reset'  value='Limpar'>
-                        <input class='btn btn-success' type='submit' name='submit' value='Cadastrar'>
-                    </form>
-                </div>";
-    } 
-
+        $this->getForm($produtos, 'Editando');        
+    }
 }
 

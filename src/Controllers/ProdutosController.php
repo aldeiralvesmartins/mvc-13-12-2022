@@ -7,11 +7,9 @@ use App\Views\ProdutosView;
 
 class ProdutosController
 {
-
-
     private $model;
-
     public $msg;
+    public $msgDanger;
 
     public function __construct(ProdutosModel $model)
     {
@@ -36,7 +34,7 @@ class ProdutosController
             $view->index($clientes);
         } else {
 
-            $view->cadastrar();
+            $view->cadastrar($this->model->dados);
         }
     }
 
@@ -49,15 +47,21 @@ class ProdutosController
             $view->index($clientes);
         } else {
             $clientes = $this->model->getById($id);
-            $view->editar(@$clientes);
+            $view->editar($clientes);
         }
     }
 
     public function excluir($id = null)
     {
         $view = new ProdutosView();
-        $this->model->excluir($id);
-        $this->msg = 'Cliente Excluido';
+        try{
+            $this->model->excluir($id);
+            $this->msg = 'Cliente Excluido';
+        }catch(\Exception $e){
+            $this->msgDanger = $e->getMessage();
+        }
+        
+        
         $view->index($this->model->getAll());
     }
 }
