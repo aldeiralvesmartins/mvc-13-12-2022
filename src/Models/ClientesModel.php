@@ -9,6 +9,7 @@ use PDO;
 class ClientesModel extends Conexao
 {   
     public $dados=[];
+    public $msgDanger;
 
     public function __construct()
     {
@@ -51,7 +52,7 @@ class ClientesModel extends Conexao
         $cmd->execute();
 
         if ($cmd->rowcount() > 0) {
-       
+            echo "<div class='alert alert-primary' role='alert'>Usuario já existe</div>";
             return false;
      
         } else
@@ -59,9 +60,16 @@ class ClientesModel extends Conexao
             $cmd = $this->conn->prepare("INSERT INTO  clientes (nome, cpf) VALUES (:n, :c)");
             $cmd->bindValue(":n", $dados['nome']);
             $cmd->bindValue(":c", $dados['cpf']);
-           // $ret =$this->validaCPF($dados['cpf']);
-         //    if($ret == true)
-               $cmd->execute();
+            $ret =$this->validaCPF($dados['cpf']);
+            if($ret == true){
+                 $cmd->execute();
+            }else{
+      
+                echo "<div class='alert alert-primary' role='alert'>CPF invalido</div>";
+            }
+           
+         
+           
             
         }
     }

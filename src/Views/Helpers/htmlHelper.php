@@ -32,43 +32,52 @@ class  htmlHelper
                             <tr>
                                 <th>ID</th>
                                 <th>Nome</th>";
-               if ($cpf) {
-                    $tabela .= "<th>CPF</th>";
-               } else {
-                   $tabela .=  "<th>Valor</th>";
-                }
-                      $tabela .= " <th></th>
+        if ($cpf) {
+            $tabela .= "<th>CPF</th>";
+        } else {
+            $tabela .=  "<th>Valor</th>";
+        }
+        $tabela .= " <th></th>
                            </tr>";
         foreach ($dados as $dado) {
-                 $tabela .=  "<tr>
+            $tabela .=  "<tr>
                                 <td>{$dado['id']}</td>
                                 <td>{$dado['nome']}</td>";
             if ($cpf) {
                 $tabela .=  "  <td>{$dado['cpf']}</td>";
             } else {
-                $tabela .= "  <td>{$dado['valor']}</td>";
+                $tabela .= "  <td>R$ " . number_format($dado['valor'], 2, ',', '.') . "</td>";
             }
-            $tabela .=  "  <td><a class='btn btn-warning' href='/?controller={$controller}&acao=editar&id={$dado['id']}'>Editar</a>
-                        <a class='btn btn-danger'onclick='funcao1()' href='/?controller={$controller}&acao=excluir&id={$dado['id']}'>Excluir</a></td>
+            $tabela .=  "  <td><a class='btn btn-warning' type='button' href='/?controller={$controller}&acao=editar&id={$dado['id']}'>Editar</a>
+                        <a class='btn btn-danger''data-id='1' type='button' data-toggle='modal' data-target='#confirma'>Excluir</a>
+                      
                     <td></td>
                   </tr>";
         }
-        $tabela .= '</table><hr><script>
-        function funcao1()
-        {
-        var x;
-        var r=confirm("Escolha um valor!");
-        if (r==true)
-          {
-          x="você pressionou OK!";
-          }
-        else
-          {
-          x="Você pressionou Cancelar!";
-          }
-        document.getElementById("demo").innerHTML=x;
-        }
-        </script>';
+        $tabela .= "</table><hr>
+
+        <div id='confirma' class='modal fade' tabindex='-1' role='dialog'>
+           <div class='modal-dialog' role='document'>
+               <div class='modal-content'>
+                   <div class='modal-header bootstrap-dialog-draggable' style='background: #f0ad4e; border-radius: 6px 6px 0 0;'>
+                       <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+                       <h4 class='modal-title'>Confirma a gravação dos dados?</h4>
+                   </div>
+                   <div class='modal-body'>
+                       <p>Tem certeza que quer excluir</p>
+                   </div>
+                   <div class='modal-footer'>
+                       <button type='button' id='btn-nao' class='btn btn-primary' data-dismiss='modal'>
+                           Voltar
+                       </button>
+                       <a class='btn btn-danger' href='/?controller={$controller}&acao=excluir&id={$dado['id']}'>Excluir</a>
+                          
+                  
+                   </div>
+               </div><!-- /.modal-content -->
+           </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+";
         echo $tabela;
     }
     //----------------->>>>>>>>>>>>>>>>fomulario de cadastro/Editar (clientes,produtos)<<<<<<<<<<<<<<<<<<<--------------------
@@ -98,20 +107,15 @@ class  htmlHelper
         if (!empty($dados['id']))
             $form .= "<input type='hidden' name='id' value={$dados['id']} >";
         $form .= "</div><br>
-                        <div>
-                            <input class='btn btn-secondary' type='reset'  value='Limpar'>
-                            <input class='btn btn-success' type='submit' name='submit' value='Cadastrar'>
+                        <div>";
+        if ($acao == 'cadastrar')
+            $form .= " <input class='btn btn-secondary' type='reset'  value='Limpar'>";
+        $form .= "  <input class='btn btn-success' type='submit' name='submit' value='{$acao}'>
                         </div>
                     </form>
-                </div>";
-        echo $form;
-    }
+                </div>        
 
-   
-
-
-} ?>
-<script>
+                <script>
                 function mascara(i){
                 
                 var v = i.value;
@@ -122,11 +126,11 @@ class  htmlHelper
                 }
                 
                 i.setAttribute('maxlength', '14');
-                if (v.length == 3 || v.length == 7) i.value += ".";
-                if (v.length == 11) i.value += "-";
+                if (v.length == 3 || v.length == 7) i.value += '.';
+                if (v.length == 11) i.value += '-';
              
              } 
-             </script> 
-
-
-
+             </script> ";
+        echo $form;
+    }
+}

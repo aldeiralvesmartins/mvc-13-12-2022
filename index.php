@@ -32,6 +32,7 @@ switch ($controller) {
     case 'home':
         $controller = new \App\Controllers\HomeController(new \App\Models\ProdutosModel());
         break;
+        
 }
 
 ?>

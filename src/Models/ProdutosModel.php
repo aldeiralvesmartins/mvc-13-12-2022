@@ -19,18 +19,23 @@ class ProdutosModel extends Conexao
 
     public function cadastrar($dados)
     {
-        $cmd = $this->conn->prepare("SELECT id FROM produtos WHERE nome = :n");
+        $cmd = $this->conn->prepare("SELECT id FROM produtos WHERE nome = :n ");
         $cmd->bindValue(":n", $dados['nome']);
         $cmd->execute();
         if ($cmd->rowcount() > 0)
-         {
+         { echo "<div class='alert alert-primary' role='alert'>Produto já foi cadastrado</div>";
             return false;
         } else {
             $cmd = $this->conn->prepare("INSERT INTO  produtos (nome, valor) VALUES (:n, :v)");
             $cmd->bindValue(":n", $dados['nome']);
+            if($dados['valor'] > 0){
             $cmd->bindValue(":v", $dados['valor']);
             $cmd->execute();
-        } $this->dados['nome']=null;
+             } else{
+                echo "<div class='alert alert-primary' role='alert'>Valor deve ser maior que 0</div>";
+            }
+        } 
+        $this->dados['nome']=null;
         $this->dados['valor']=null;
     }
 
@@ -45,7 +50,7 @@ class ProdutosModel extends Conexao
 
 
     public function excluir($id)
-    {
+    { 
         try{
             $cmd = $this->conn->prepare("DELETE FROM produtos where id = '$id'");
             $cmd->execute();
