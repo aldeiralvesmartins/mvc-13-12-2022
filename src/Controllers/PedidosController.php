@@ -18,6 +18,7 @@ class PedidosController
     public $msg;
     public $msgDanger;
     public $status=['Aberto'=>'Aberto', 'Pago'=>'Pago', 'Cancelado'=>'Cancelado'];
+
     public function __construct(
         PedidosModel $model,
         ClientesModel $clientes,
@@ -43,16 +44,17 @@ class PedidosController
         $clientes = $this->clientesModel->getList();
         $produtos = $this->produtosModel->getList();
        
-    
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') 
+        {
             $itens = $_POST['itens_pedido'];
             $itens['pedido_id'] = $this->pedido->cadastrar($_POST['pedido']);
 
             $this->itensPedido->cadastrar($itens);
             $pedidos = $this->pedido->getAll();
             $view->index($pedidos);
-        } else {
-            $view->cadastrar($clientes, $produtos);
+        } else 
+        {
+         $view->cadastrar($clientes, $produtos);
         }
     }
 
@@ -63,14 +65,13 @@ class PedidosController
             $pedidos = $this->pedido->editar($_POST);
             $pedidos = $this->pedido->getAll();
             $view->index($pedidos);
-        } else {
-
+        } else 
+        {
             $pedido['clientes'] = $this->clientesModel->getList();
             $pedido['produtos'] = $this->produtosModel->getList();
             $pedido['pedido'] = $this->pedido->getById($id);
             $pedido['itens'] = $this->itensPedido->getByPedidoId($id);
             $pedido['status'] = $this->status;
-            // debug($pedido);
             $view->editar($pedido);
         }
     }

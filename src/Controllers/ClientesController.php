@@ -30,8 +30,8 @@ class ClientesController
             $clientes = $this->model->cadastrar($_POST);
             $clientes = $this->model->getAll();
             $view->index($clientes);
-        } else {
-
+        } else 
+        { $clientes = $this->model->getAll();
             $view->cadastrar($this->model->dados);
         }
     }
@@ -43,7 +43,8 @@ class ClientesController
             $clientes = $this->model->editar($_POST);
             $clientes = $this->model->getAll();
             $view->index($clientes);
-        } else {
+        } else 
+        {
             $clientes = $this->model->getById($id);
             $view->editar($clientes);
         }
@@ -55,7 +56,8 @@ class ClientesController
         try {
             $this->model->excluir($id);
             $this->msg = 'Cliente Excluido';
-        } catch (\Exception $e) {
+        } catch (\Exception $e)
+        {
             $this->msgDanger = $e->getMessage();
         }
         $view->index($this->model->getAll());

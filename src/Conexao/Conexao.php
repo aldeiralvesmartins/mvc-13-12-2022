@@ -11,10 +11,7 @@ define('BD_BANCO', 'app_db2');
 
 class Conexao
 {
-
     protected $conn;
-
-
 
     public function __construct()
     {

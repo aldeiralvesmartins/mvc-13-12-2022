@@ -17,20 +17,12 @@ class ItensPedidosModel extends Conexao
 
     public function cadastrar($dados)
     {
-        $cmd = $this->conn->prepare("SELECT pedido_id FROM itens_pedidos WHERE pedido_id = :ped_id");
-        $cmd->bindValue(":ped_id", $dados['pedido_id']);
-        $cmd->execute();
-
-        if ($cmd->rowcount() < 0) {
-            return false;
-        } else {
             $cmd = $this->conn->prepare("INSERT INTO  itens_pedidos (produto_id, quantidade,valor_unitario,pedido_id) VALUES (:pro_id,:q,:val_u,:ped_id)");
             $cmd->bindValue(":pro_id", $dados['produto_id']);
             $cmd->bindValue(":q", $dados['quantidade']);
             $cmd->bindValue(":val_u", $dados['valor_unitario']);
             $cmd->bindValue(":ped_id", $dados['pedido_id']);
             $cmd->execute();
-        }
     }
 
 
@@ -57,7 +49,6 @@ class ItensPedidosModel extends Conexao
 
     public function getById($id)
     {
-        $res = array();
         $cmd = $this->conn->prepare("SELECT * FROM itens_pedidos where pedido_id = :id");
         $cmd->bindValue(":id", $id);
         $cmd->execute();
@@ -66,7 +57,6 @@ class ItensPedidosModel extends Conexao
 
     public function getByPedidoId($id)
     {
-        $res = array();
         $cmd = $this->conn->prepare("SELECT * FROM itens_pedidos where pedido_id = :id");
         $cmd->bindValue(":id", $id);
         $cmd->execute();

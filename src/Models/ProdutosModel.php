@@ -22,8 +22,8 @@ class ProdutosModel extends Conexao
         $cmd = $this->conn->prepare("SELECT id FROM produtos WHERE nome = :n");
         $cmd->bindValue(":n", $dados['nome']);
         $cmd->execute();
-
-        if ($cmd->rowcount() > 0) {
+        if ($cmd->rowcount() > 0)
+         {
             return false;
         } else {
             $cmd = $this->conn->prepare("INSERT INTO  produtos (nome, valor) VALUES (:n, :v)");
@@ -74,7 +74,8 @@ class ProdutosModel extends Conexao
         return $cmd->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getList(){
+    public function getList()
+    {
         $res = array();
         $cmd = $this->conn->prepare("SELECT id, nome FROM produtos order by nome asc");
         $cmd->execute();        

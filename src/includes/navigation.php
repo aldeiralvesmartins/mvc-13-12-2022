@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container ">
     <ul class="nav nav-pills">
         <li class="nav-item">
             <a class="nav-link <?php if ($CURRENT_PAGE == "Index") {?>active<?php }?>" href="/?controller=home&acao=index">Home</a>
@@ -13,5 +13,5 @@
             <a class="nav-link <?php if ($CURRENT_PAGE == "About") {?>active<?php }?>" href="/?controller=pedidos&acao=index">Pedidos</a>
         </li>
     </ul>
-</div>
+    
 </div>

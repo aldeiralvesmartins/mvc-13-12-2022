@@ -53,7 +53,7 @@ switch ($controller) {
         <?php
         $controller->$acao($id);
         if (!empty($controller->msg)) echo "<div class='alert alert-primary' role='alert'>{$controller->msg}</div>";
-        if (!empty($controller->msgDanger)) echo "<div class='alert alert-danger' role='alert'>{$controller->msgDanger}</div>";
+        if (!empty($controller->msgDanger)) echo "<div class='alert alert-danger' role='alert'>{$controller->msgDanger}</div> ";
 
         ?>
 

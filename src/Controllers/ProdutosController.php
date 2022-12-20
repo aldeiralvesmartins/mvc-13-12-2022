@@ -32,7 +32,8 @@ class ProdutosController
             $clientes = $this->model->cadastrar($_POST);
             $clientes = $this->model->getAll();
             $view->index($clientes);
-        } else {
+        } else 
+        {
 
             $view->cadastrar($this->model->dados);
         }
@@ -45,7 +46,8 @@ class ProdutosController
             $clientes = $this->model->editar($_POST);
             $clientes = $this->model->getAll();
             $view->index($clientes);
-        } else {
+        } else
+        {
             $clientes = $this->model->getById($id);
             $view->editar($clientes);
         }
@@ -56,8 +58,9 @@ class ProdutosController
         $view = new ProdutosView();
         try{
             $this->model->excluir($id);
-            $this->msg = 'Cliente Excluido';
-        }catch(\Exception $e){
+            $this->msg = 'Produto Excluido';
+        }catch(\Exception $e)
+        {
             $this->msgDanger = $e->getMessage();
         }
         

@@ -7,23 +7,13 @@ use PDO;
 
 class PedidosModel extends Conexao
 {
-
-
     public function __construct()
     {
         parent::__construct();
-  
     }
 
     public function cadastrar($dados)
     {
-        $cmd = $this->conn->prepare("SELECT cliente_id FROM pedidos WHERE cliente_id = :c");
-        $cmd->bindValue(":c", $dados['cliente_id']);
-        $cmd->execute();
-
-        if ($cmd->rowcount() < 0) {
-            return false;
-        } else {
             $cmd = $this->conn->prepare("INSERT INTO  pedidos (cliente_id, data,status) VALUES (:c,:d,:s)");
             $cmd->bindValue(":c", $dados['cliente_id']);
             $cmd->bindValue(":d", $dados['data']);
@@ -33,22 +23,16 @@ class PedidosModel extends Conexao
             $cmd->execute();
             $id = $cmd->fetchAll(PDO::FETCH_COLUMN);
             return $id[0];
-        }
     }
-
 
     public function getAll()
     {
-        $res = array();
         $cmd = $this->conn->prepare("SELECT pedidos.id, data, status, clientes.nome FROM pedidos
-        inner join clientes on (clientes.id = pedidos.cliente_id)
-        ");
+        inner join clientes on (clientes.id = pedidos.cliente_id)");
         $cmd->execute();
         $res = $cmd->fetchAll(PDO::FETCH_ASSOC);
-
         return $res;
     }
-
 
     public function excluir($id)
     {
@@ -66,9 +50,9 @@ class PedidosModel extends Conexao
     public function editar($dados)
     {
         $cmd = $this->conn->prepare("UPDATE pedidos SET cliente_id = :c, data = :d, status = :s WHERE id = :id");
-        $cmd->bindValue(":c", $dados['cliente_id']);
-        $cmd->bindValue(":d", $dados['data']);
-        $cmd->bindValue(":s", $dados['status']);
+        $cmd->bindValue(":c", $dados['pedido']['cliente_id']);
+        $cmd->bindValue(":d", $dados['pedido']['data']);
+        $cmd->bindValue(":s", $dados['pedido']['status']);
         $cmd->bindValue(":id", $dados['id']);
         $cmd->execute();
         return $cmd->fetchAll();
@@ -76,7 +60,6 @@ class PedidosModel extends Conexao
 
     public function getById($id)
     {
-        $res = array();
         $cmd = $this->conn->prepare("SELECT * FROM pedidos where id = :id");
         $cmd->bindValue(":id", $id);
         $cmd->execute();
