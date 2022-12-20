@@ -50,34 +50,32 @@ class  htmlHelper
             }
             $tabela .=  "  <td><a class='btn btn-warning' type='button' href='/?controller={$controller}&acao=editar&id={$dado['id']}'>Editar</a>
                         <a class='btn btn-danger''data-id='1' type='button' data-toggle='modal' data-target='#confirma'>Excluir</a>
+                        <div id='confirma' class='modal fade' tabindex='-1' role='dialog'>
+                        <div class='modal-dialog' role='document'>
+                            <div class='modal-content'>
+                                <div class='modal-header bootstrap-dialog-draggable' style='background: #f0ad4e; border-radius: 6px 6px 0 0;'>
+                                   
+                                    <h4 class='modal-title'>Confirma a gravação dos dados ?</h4>
+                                </div>
+                                <div class='modal-body'>
+                                    <p>Tem certeza que deseja excluir</p>
+                                </div>
+                                <div class='modal-footer'>
+                                    <button type='button' id='btn-nao' class='btn btn-primary' data-dismiss='modal'>
+                                        Voltar
+                                    </button>
+                                    <a class='btn btn-danger' href='/?controller={$controller}&acao=excluir&id={$dado['id']}'>Excluir</a>
+                                       
+                               
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                     </div><!-- /.modal -->
                       
                     <td></td>
                   </tr>";
         }
-        $tabela .= "</table><hr>
-
-        <div id='confirma' class='modal fade' tabindex='-1' role='dialog'>
-           <div class='modal-dialog' role='document'>
-               <div class='modal-content'>
-                   <div class='modal-header bootstrap-dialog-draggable' style='background: #f0ad4e; border-radius: 6px 6px 0 0;'>
-                       <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
-                       <h4 class='modal-title'>Confirma a gravação dos dados?</h4>
-                   </div>
-                   <div class='modal-body'>
-                       <p>Tem certeza que quer excluir</p>
-                   </div>
-                   <div class='modal-footer'>
-                       <button type='button' id='btn-nao' class='btn btn-primary' data-dismiss='modal'>
-                           Voltar
-                       </button>
-                       <a class='btn btn-danger' href='/?controller={$controller}&acao=excluir&id={$dado['id']}'>Excluir</a>
-                          
-                  
-                   </div>
-               </div><!-- /.modal-content -->
-           </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-";
+        $tabela .= "</table><hr>";
         echo $tabela;
     }
     //----------------->>>>>>>>>>>>>>>>fomulario de cadastro/Editar (clientes,produtos)<<<<<<<<<<<<<<<<<<<--------------------
@@ -114,7 +112,6 @@ class  htmlHelper
                         </div>
                     </form>
                 </div>        
-
                 <script>
                 function mascara(i){
                 
