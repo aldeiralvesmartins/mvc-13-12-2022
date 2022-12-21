@@ -24,7 +24,7 @@ class  htmlHelper
         return $select;
     }
     //----------------->>>>>>>>>>>>>>>>tabela de clientes/produtos)<<<<<<<<<<<<<<<<<<<--------------------
-    public static function getTable($dados, $cpf, $controller)
+    public static function getTable($dados, $cpf, $controller = null)
     {
         $tabela = "<a class='btn btn-primary' href='/?controller={$controller}&acao=cadastrar' role='button'>Novo</a> 
                             </br><br><br>
@@ -48,8 +48,9 @@ class  htmlHelper
             } else {
                 $tabela .= "  <td>R$ " . number_format($dado['valor'], 2, ',', '.') . "</td>";
             }
-            $tabela .=  "  <td><a class='btn btn-warning' type='button' href='/?controller={$controller}&acao=editar&id={$dado['id']}'>Editar</a>
-                        <a class='btn btn-danger''data-id='1' type='button' data-toggle='modal' data-target='#confirma'>Excluir</a>
+            $tabela .=  "  <td><a class='btn btn-primary' type='button' href='/?controller={$controller}&acao=editar&id={$dado['id']}'>Editar</a>
+                        <button class='btn btn-danger''data-id='1' type='button' onclick=getValue({$dado['id']}) data-toggle='modal' data-target='#confirma'>Excluir</button>
+
                         <div id='confirma' class='modal fade' tabindex='-1' role='dialog'>
                         <div class='modal-dialog' role='document'>
                             <div class='modal-content'>
@@ -64,21 +65,29 @@ class  htmlHelper
                                     <button type='button' id='btn-nao' class='btn btn-primary' data-dismiss='modal'>
                                         Voltar
                                     </button>
-                                    <a class='btn btn-danger' href='/?controller={$controller}&acao=excluir&id={$dado['id']}'>Excluir</a>
+                                    <a class='btn btn-danger' id='excluir'>Excluir</a>
                                        
                                
                                 </div>
                             </div><!-- /.modal-content -->
                         </div><!-- /.modal-dialog -->
-                     </div><!-- /.modal -->
-                      
+                     </div><!-- /.modal --> </td>
+                    
                     <td></td>
-                  </tr>";
-        }
+                  </tr>
+                <script> function getValue(id) {
+
+                    let element = document.getElementById('excluir');
+                    element.setAttribute('href', '?controller={$controller}&acao=excluir&id=' + id)
+
+                }
+                  </script>";
+                  
+        }                  
         $tabela .= "</table><hr>";
         echo $tabela;
     }
-    //----------------->>>>>>>>>>>>>>>>fomulario de cadastro/Editar (clientes,produtos)<<<<<<<<<<<<<<<<<<<--------------------
+    //----------------->>>>>>>>>>>>>>>>>>fomulario de cadastro/Editar (clientes,produtos)<<<<<<<<<<<<<<<<<<<--------------------
     public static function getForm($dados, $titulo, $acao, $controller, $placeholder, $placeholder2, $value)
     {
         $form = " 
@@ -108,7 +117,7 @@ class  htmlHelper
                         <div>";
         if ($acao == 'cadastrar')
             $form .= " <input class='btn btn-secondary' type='reset'  value='Limpar'>";
-        $form .= "  <input class='btn btn-success' type='submit' name='submit' value='{$acao}'>
+        $form .= "  <input class='btn btn-success my' type='submit' name='submit' value='{$acao}'>
                         </div>
                     </form>
                 </div>        

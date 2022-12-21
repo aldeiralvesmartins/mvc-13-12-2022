@@ -76,7 +76,7 @@ class ClientesModel extends Conexao
 
     public function getAll()
     {
-        $res = array();
+ 
         $cmd = $this->conn->prepare("SELECT * FROM clientes");
         $cmd->execute();
         $res = $cmd->fetchAll();
@@ -102,7 +102,13 @@ class ClientesModel extends Conexao
         $cmd->bindValue(":c", $dados['cpf']);
         $cmd->bindValue(":n", $dados['nome']);
         $cmd->bindValue(":id", $dados['id']);
-        $cmd->execute();
+        $ret =$this->validaCPF($dados['cpf']);
+        if($ret == true){
+             $cmd->execute();
+        }else{
+  
+            echo "<div class='alert alert-primary' role='alert'>CPF invalido</div>";
+        }
         return $cmd->fetchAll();
     }
 

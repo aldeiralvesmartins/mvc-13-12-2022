@@ -8,24 +8,24 @@ class PedidosView
 {
     public function index($dados)
     {
-        echo '<a class="btn btn-primary" href="/?controller=pedidos&acao=cadastrar" role="button">Novo</a>';
-        echo '</br><br><br>';
-        echo '<table class="table">';
-        echo " <tr>
-            <th>ID</th>
-            <th>Cliente</th>
-            <th>Data</th>
-            <th>Status</th>
-            <th></th>
-        </tr>";
+        echo "<a class='btn btn-primary' href='/?controller=pedidos&acao=cadastrar' role='button'>Novo</a>
+            </br><br><br>
+                <table class='table'>
+                <tr>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Data</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>";
         foreach ($dados as $dado) {
             echo "<tr>
                     <td>{$dado['id']}</td>
                     <td>{$dado['nome']}</td>
                     <td>{$dado['data']}</td>
                     <td>{$dado['status']}</td>
-                   <td><a class='btn btn-warning' href='/?controller=pedidos&acao=editar&id={$dado['id']}'>Editar</a>
-                   <a class='btn btn-danger''data-id='1' type='button' data-toggle='modal' data-target='#confirma'>Excluir</a>
+                   <td><a class='btn btn-primary' href='/?controller=pedidos&acao=editar&id={$dado['id']}'>Editar</a>
+                   <button class='btn btn-danger''data-id='1' onclick=getValue({$dado['id']}) type='button' data-toggle='modal' data-target='#confirma'>Excluir</button>
                    <div id='confirma' class='modal fade' tabindex='-1' role='dialog'>
                    <div class='modal-dialog' role='document'>
                        <div class='modal-content'>
@@ -40,7 +40,7 @@ class PedidosView
                                <button type='button' id='btn-nao' class='btn btn-primary' data-dismiss='modal'>
                                    Voltar
                                </button>
-                               <a class='btn btn-danger' href='/?controller=pedidos&acao=excluir&id={$dado['id']}'>Excluir</a>
+                               <a class='btn btn-danger' id='excluir'>Excluir</a>
                                   
                           
                            </div>
@@ -48,7 +48,13 @@ class PedidosView
                    </div><!-- /.modal-dialog -->
                 </div><!-- /.modal -->
         
-             </tr>";
+             </tr><script> function getValue(id) {
+
+                let element = document.getElementById('excluir');
+                element.setAttribute('href', '?controller=pedidos&acao=excluir&id=' + id)
+
+            }
+              </script>";
         }
         echo "</table><hr>";
         
